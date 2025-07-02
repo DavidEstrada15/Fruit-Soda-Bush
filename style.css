@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#latacontainer{
+    height: 60vh;
+    position: relative;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 2;
+    mask-image: url("imagenes\ del\ proyecto/lata.svg");
+    mask-size: 100%;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    overflow: hidden;
+}
+
+#latacontainer img{
+    height: 100%;
+}
+
+#etiqueta{
+    position: absolute;
+    left: 0%;
+    mix-blend-mode: multiply;
+}
+
+main{
+    z-index: 1;
+    position: static;
+}
+
+header{
+    display: flex;
+    place-content: center;
+    font-family: Lexend;
+    font-size: 25px;
+}
+
+body{
+  background-color: rgb(34, 199, 34);   
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+   
+}
+
+h2{
+    position: absolute;
+    color: white;
+    z-index: -1;
+    place-self: center;
+    margin-top: 100px;
+    margin-left: 350px;
+    font-size: 300px;
+    font-family: Lexend;
+}
+
+#containerbuttons{
+    display: flex;
+    position: fixed;
+    align-items: center;
+    z-index: 3;
+    height: 100%;
+    width: 95vw;
+}
+
+#buttonleft{
+   background-color: white;
+   border-radius: 50%;
+   padding: 20px;
+   cursor: pointer;
+   position: absolute;
+   left: 0;
+}
+
+#buttonright{
+    background-color: white;
+    border-radius: 100px;
+    padding: 20px;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+}
+
+#etiqueta{
+    height: 100%;
+}
