@@ -1,9 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
 
+:root{
+    --levitarValor: 0 ;
+    --moveFruitDir: 0
+}
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
 }
 
 #latacontainer{
@@ -11,7 +21,7 @@
     position: relative;
     bottom: 0;
     display: flex;
-    justify-content: center;
+    place-content: center;
     z-index: 2;
     mask-image: url("imagenes\ del\ proyecto/lata.svg");
     mask-size: 100%;
@@ -30,45 +40,46 @@
     mix-blend-mode: multiply;
 }
 
-main{
-    z-index: 1;
-    position: static;
-}
-
 header{
     display: flex;
     place-content: center;
     font-family: Lexend;
     font-size: 25px;
 }
-
-body{
-  background-color: rgb(34, 199, 34);   
-}
-
 main{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
-   
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
 }
 
 h2{
-    position: absolute;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    left: 0;
     color: white;
-    z-index: -1;
-    place-self: center;
-    margin-top: 100px;
-    margin-left: 350px;
+    z-index: 1;
     font-size: 300px;
     font-family: Lexend;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: showh2 2s infinite;
+    animation: hideh2 2s  infinite;
 }
 
 #containerbuttons{
     display: flex;
     position: fixed;
+    top: 0;
     align-items: center;
     z-index: 3;
     height: 100%;
@@ -82,6 +93,7 @@ h2{
    cursor: pointer;
    position: absolute;
    left: 0;
+   animation: buttonaura 1s 1s infinite;
 }
 
 #buttonright{
@@ -91,8 +103,166 @@ h2{
     cursor: pointer;
     position: absolute;
     right: 0;
+    animation: buttonaura 1s 1s infinite;
 }
 
 #etiqueta{
     height: 100%;
+}
+
+.fruits{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.fruits section{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.fruits section .background{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: -3;
+}
+
+.fruits section div img{
+    height: 100%;
+    width: 100%;
+}
+.fruits section div:nth-child(6){
+    bottom: 0vh;
+    left: 2vw;
+    width: 43vh;
+    --levitarValor: 3;
+    --moveFruitDir: 1
+}
+
+.fruits section div:nth-child(3){
+    top: 15vh;
+    left: 22vw;
+    width: 25vh;
+    --levitarValor: 4;
+    --moveFruitDir: -1
+}
+
+.fruits section div:nth-child(4){
+    top: 10vh;
+    right: 10vw;
+    width: 20vh;
+    --levitarValor: 2;
+    --moveFruitDir: -1
+}
+
+.fruits section div:nth-child(5){
+    bottom: 2vh;
+    right: 2vw;
+    width: 35vh;
+    --levitarValor: 1;
+    --moveFruitDir: 1
+}
+
+body{
+    background-color: black;
+}
+
+.floatsfruits{
+    position: absolute;
+}
+
+.fruits div::after{
+content: "";
+position: absolute;
+height: 20px;
+width: 80%;
+bottom: -10%;
+background: linear-gradient(to right, transparent, white, transparent);
+left: 10%;
+filter: blur(10px);
+border-radius: 50%;
+}
+
+@keyframes buttonaura {
+from{
+box-shadow: 0 0 0 0 red;
+}
+to{
+box-shadow: 0 0 0 20px transparent;
+}
+}
+
+@keyframes showh2 {
+from{
+    transform: translateY(100px);
+    opacity: 0;
+}
+to{
+    transform: translateY(0);
+    opacity: 1;
+}
+}
+
+@keyframes hideh2 {
+    from{
+transform: translateY(0);
+opacity: 1;
+    }
+    to{
+transform: translateY(-100px);
+opacity: 0;
+    }
+}
+@keyframes showfruits {
+    from{
+        transform: translateY(calc(var(--moveFruitDir * 10vh)));
+    }
+    to{
+        transform: translateY(calc(var(--moveFruitDir *10vh)));
+    }
+}
+
+@keyframes hidefruits {
+    from{
+        transform: translateY(calc(var(--moveFruitDir * 100vh)));
+    }
+    to{
+        transform: translateY(calc(var(--moveFruitDir *100vh)));
+    }
+}
+
+
+@keyframes levitarX {
+    from{
+        transform: translateX(calc(var(--levitarValor) * 1vh));
+    }
+    to{
+        transform: translateX(calc(var(--levitarValor) * -1vh));
+    }
+}
+
+@keyframes levitarY {
+    from{
+        transform: translateY(calc(var(--levitarValor) * 1vh));
+    }
+    to{
+        transform: translateY(calc(var(--levitarValor) * -1vh));
+    }
+}
+
+.floatsfruits{
+    transition: all 0.3 ease;
+    animation: levitarX calc(var(--levitarValor) * 1s)  ease-in-out infinite alternate
+                calc(var(--levitarValor) * 100ms),
+                 levitarY calc(var(--levitarValor) * 1s) ease-in-out infinite alternate calc(var(--levitarValor)* 500ms),
+                showfruits 2s ease infinite alternate;
+    animation-composition: add;
 }
