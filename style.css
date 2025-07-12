@@ -2,7 +2,10 @@
 
 :root{
     --levitarValor: 0 ;
-    --moveFruitDir: 0
+    --moveFruitDir: 0 ;
+    --fruitmovedelay: 0;
+    --fruitmovewavedelay: 1;
+    --buttonColor: white;
 }
 
 *{
@@ -14,6 +17,10 @@
 body{
     width: 100vw;
     height: 100vh;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling:  touch;
+    white-space: nowrap; 
 }
 
 #latacontainer{
@@ -38,6 +45,7 @@ body{
     position: absolute;
     left: 0%;
     mix-blend-mode: multiply;
+    transition: all 0.3s ease;
 }
 
 header{
@@ -45,6 +53,8 @@ header{
     place-content: center;
     font-family: Lexend;
     font-size: 25px;
+    z-index: 10;
+    position: relative;
 }
 main{
     display: flex;
@@ -72,8 +82,7 @@ h2{
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: showh2 2s infinite;
-    animation: hideh2 2s  infinite;
+    opacity: 0;
 }
 
 #containerbuttons{
@@ -94,6 +103,7 @@ h2{
    position: absolute;
    left: 0;
    animation: buttonaura 1s 1s infinite;
+   color: var(--buttonColor);
 }
 
 #buttonright{
@@ -104,6 +114,7 @@ h2{
     position: absolute;
     right: 0;
     animation: buttonaura 1s 1s infinite;
+    color: var(--buttonColor);
 }
 
 #etiqueta{
@@ -114,8 +125,6 @@ h2{
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -126,25 +135,29 @@ h2{
     display: flex;
     width: 100vw;
     height: 100vh;
+    min-width: 100vw;
+    flex-shrink: 0;
 }
 
 .fruits section .background{
     width: 100%;
     height: 100%;
     position: relative;
-    z-index: -3;
+    z-index: -10;
 }
 
 .fruits section div img{
     height: 100%;
     width: 100%;
+    opacity: 0;
 }
 .fruits section div:nth-child(6){
-    bottom: 0vh;
+    bottom: 10vh;
     left: 2vw;
-    width: 43vh;
+    width: 22vh;
     --levitarValor: 3;
-    --moveFruitDir: 1
+    --moveFruitDir: 1;
+    --fruitmovedelay: 4;
 }
 
 .fruits section div:nth-child(3){
@@ -152,15 +165,17 @@ h2{
     left: 22vw;
     width: 25vh;
     --levitarValor: 4;
-    --moveFruitDir: -1
+    --moveFruitDir: -1;
+    --fruitmovedelay: 3;
 }
 
 .fruits section div:nth-child(4){
     top: 10vh;
-    right: 10vw;
+    right: 12vw;
     width: 20vh;
     --levitarValor: 2;
-    --moveFruitDir: -1
+    --moveFruitDir: -1;
+    --fruitmovedelay: 2;
 }
 
 .fruits section div:nth-child(5){
@@ -168,7 +183,8 @@ h2{
     right: 2vw;
     width: 35vh;
     --levitarValor: 1;
-    --moveFruitDir: 1
+    --moveFruitDir: 1;
+    --fruitmovedelay:1;
 }
 
 body{
@@ -176,7 +192,12 @@ body{
 }
 
 .floatsfruits{
-    position: absolute;
+    position: fixed;
+    animation-composition: add;
+    transition: all 0.5s;
+    animation: levitarX calc(var(--levitarValor) * 1s)  ease-in-out infinite alternate both
+                calc(var(--levitarValor) * 100ms),
+                levitarY calc(var(--levitarValor) * 1s) ease-in-out infinite alternate both calc(var(--levitarValor)* 500ms);
 }
 
 .fruits div::after{
@@ -189,11 +210,12 @@ background: linear-gradient(to right, transparent, white, transparent);
 left: 10%;
 filter: blur(10px);
 border-radius: 50%;
+opacity: 0;
 }
 
 @keyframes buttonaura {
 from{
-box-shadow: 0 0 0 0 red;
+box-shadow: 0 0 0 0 var(--buttonColor);
 }
 to{
 box-shadow: 0 0 0 20px transparent;
@@ -223,19 +245,24 @@ opacity: 0;
 }
 @keyframes showfruits {
     from{
-        transform: translateY(calc(var(--moveFruitDir * 10vh)));
+        transform: translate(0, calc(var(--moveFruitDir) * 100vh));
+        opacity: 0;
     }
     to{
-        transform: translateY(calc(var(--moveFruitDir *10vh)));
+        transform: translate(0, 0);
+        opacity: 1;
     }
 }
 
 @keyframes hidefruits {
     from{
-        transform: translateY(calc(var(--moveFruitDir * 100vh)));
+        transform: translate(0,0);
+        opacity: 1
     }
     to{
-        transform: translateY(calc(var(--moveFruitDir *100vh)));
+        transform: translate(0, calc(var(--moveFruitDir) * 100vh));
+        opacity: 0;
+
     }
 }
 
@@ -258,11 +285,28 @@ opacity: 0;
     }
 }
 
-.floatsfruits{
-    transition: all 0.3 ease;
-    animation: levitarX calc(var(--levitarValor) * 1s)  ease-in-out infinite alternate
-                calc(var(--levitarValor) * 100ms),
-                 levitarY calc(var(--levitarValor) * 1s) ease-in-out infinite alternate calc(var(--levitarValor)* 500ms),
-                showfruits 2s ease infinite alternate;
-    animation-composition: add;
+.show-h2{
+animation: showh2 0.5s ease-out both ;
+}
+
+.hide-h2{
+animation: hideh2 0.5s ease-in;
+}
+
+
+.show-fruits img{
+    animation: showfruits 0.5s ease-out both  calc(((var(--fruitmovedelay) * var(--fruitmovewavedelay)) + 3) * 50ms)
+}
+
+.show-fruits::after{
+    animation: showfruits 0.5s ease-out both calc(((var(--fruitmovedelay) * var(--fruitmovewavedelay)) + 3) * 50ms) ;
+}
+
+
+.hide-fruits img{
+    animation: hidefruits 0.5s ease-out calc(((var(--fruitmovedelay) * var(--fruitmovewavedelay)) + 3) * 50ms) ;
+}
+
+.hide-fruits::after{
+    animation: hidefruits 0.5s ease-out calc(((var(--fruitmovedelay) * var(--fruitmovewavedelay)) + 3) * 50ms) ;
 }
