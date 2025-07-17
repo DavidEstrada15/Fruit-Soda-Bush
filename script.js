@@ -4,7 +4,9 @@ const h1= document.querySelector("h1")
 const fruits= document.querySelector(".fruits")
 const etiqueta= document.getElementById("etiqueta")
 let startx = 0;
-let scrollleft;
+let starty= 0;
+let endx= 0;
+let endy= 0
 let viewinfo= {
     vistaactual: 0,
     informacion: [
@@ -45,13 +47,13 @@ if (indice < viewinfo.informacion.length - 1) {
     buttonright.style.visibility= "hidden"
 }
 
-h1.style.color= viewinfo.informacion[indice].TitleColor
-fruits.style.left= `-${indice}00%`
-etiqueta.style.left= `-${indice}00%`
-document.querySelector(`#${viewinfo.informacion[indice].name}`)
+    h1.style.color= viewinfo.informacion[indice].TitleColor
+    fruits.style.left= `-${indice}00%`
+    etiqueta.style.left= `-${indice}00%`
+    document.querySelector(`#${viewinfo.informacion[indice].name}`)
     .querySelector("h2").classList.add("show-h2")
 
-document.querySelector(`#${viewinfo.informacion[indice].name}`)
+    document.querySelector(`#${viewinfo.informacion[indice].name}`)
     .querySelector("h2").classList.remove("hide-h2")
 
     document.querySelector(`#${viewinfo.informacion[indice].name}`)
@@ -78,52 +80,73 @@ function cargarbackgroundcolor(){
 cargarbackgroundcolor()
 
 document.addEventListener("keydown", (event)=>{
-    switch(event.keyCode){
-        case 39:
-            buttonrightfunction() 
-    break; 
+    switch(event.key){
+        case "ArrowRight":
+        case "ArrowUp":
+            if (viewinfo.vistaactual == viewinfo.informacion.length - 1) {
+               buttonleft2() 
+            }else{
+             buttonrightfunction()    
+            }
             
-           
-    
-    case 37:
-        buttonleftfunction() 
-    
+        break;    
+    case "ArrowLeft":
+    case "ArrowDown":
+        buttonleftfunction();
+
+    default:
+        break;
     }
 })
 
 document.body.addEventListener("touchstart", (event)=>{
-startx= event.touches[0].pageX
+    startx= event.touches[0].pageX
+    starty= event.touches[0].pageY
 })
 
-    document.body.addEventListener("touchend", (event)=>{
-        const x= event.changedTouches[0].pageX
-    const walk= startx - x
-    const swipe= 50
-    startx= x
-         if (walk < swipe && viewinfo.vistaactual < 3) {
-           buttonrightfunction() } else if (walk > swipe && viewinfo.vistaactual > 0){
+document.body.addEventListener("touchend", (event)=>{
+    endy= event.changedTouches[0].clientY
+    endx= event.changedTouches[0].clientX
+    const walk= startx - endx
+    const walky= starty - endy
+    startx= endx
+    starty= endy
+         if (walk < -50 && viewinfo.vistaactual < viewinfo.informacion.length - 1) {
+            buttonrightfunction() } else if( walk < 50 && viewinfo.vistaactual == viewinfo.informacion.length - 1){
+            buttonleft2()
+         } else if (walk > 50 && viewinfo.vistaactual > 0){
+            buttonleftfunction()
+    }
+     else if (walky < -50 && viewinfo.vistaactual < viewinfo.informacion.length - 1) {
+            buttonrightfunction() } else if( walky < 50 && viewinfo.vistaactual == viewinfo.informacion.length - 1){
+            buttonleft2()
+         } else if (walky > 50 && viewinfo.vistaactual > 0){
             buttonleftfunction()
     }
     })
 
 function buttonrightfunction(){
-   viewinfo.vistaactual ++
+    if (viewinfo.vistaactual < viewinfo.informacion.length -1) {
+        viewinfo.vistaactual ++
         
 
         document.querySelector(`#${viewinfo.informacion[viewinfo.vistaactual - 1].name}`)
     .querySelector("h2").classList.add("hide-h2")
     
-    document.querySelector(`#${viewinfo.informacion[viewinfo.vistaactual - 1].name}`)
+        document.querySelector(`#${viewinfo.informacion[viewinfo.vistaactual - 1].name}`)
     .querySelectorAll(".floatsfruits").forEach( ( fruta)=>{
         fruta.classList.add("hide-fruits")
         fruta.classList.remove("show-fruits")})
         
-   updateView(viewinfo.vistaactual)  
+        updateView(viewinfo.vistaactual)     
+    }
+   
 }
 
 function buttonleftfunction() {
-    viewinfo.vistaactual --
-document.querySelector(`#${viewinfo.informacion[viewinfo.vistaactual + 1].name}`)
+    if (viewinfo.vistaactual > 0) {
+       viewinfo.vistaactual --
+    document.querySelector(`#${viewinfo.informacion[viewinfo.vistaactual + 1].name}`)
     .querySelector("h2").classList.add("hide-h2")
     
     document.querySelector(`#${viewinfo.informacion[viewinfo.vistaactual + 1].name}`)
@@ -131,5 +154,30 @@ document.querySelector(`#${viewinfo.informacion[viewinfo.vistaactual + 1].name}`
         fruta.classList.add("hide-fruits")
         fruta.classList.remove("show-fruits")
     })
-    updateView(viewinfo.vistaactual)
+    updateView(viewinfo.vistaactual) 
+    } 
+    
+}
+
+function buttonleft2() {
+    document.querySelector(`#${viewinfo.informacion[viewinfo.vistaactual].name }`)
+    .querySelector("h2").classList.add("hide-h2")
+    
+    document.querySelector(`#${viewinfo.informacion[viewinfo.vistaactual].name }`)
+    .querySelectorAll(".floatsfruits").forEach( ( fruta)=>{
+        fruta.classList.add("hide-fruits")
+        fruta.classList.remove("show-fruits")
+    })
+       viewinfo.vistaactual --
+       viewinfo.vistaactual --
+    document.querySelector(`#${viewinfo.informacion[viewinfo.vistaactual].name }`)
+    .querySelector("h2").classList.add("hide-h2")
+    
+    document.querySelector(`#${viewinfo.informacion[viewinfo.vistaactual].name }`)
+    .querySelectorAll(".floatsfruits").forEach( ( fruta)=>{
+        fruta.classList.add("hide-fruits")
+        fruta.classList.remove("show-fruits")
+    })
+    updateView(viewinfo.vistaactual) 
+    
 }
