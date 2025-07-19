@@ -82,7 +82,7 @@ cargarbackgroundcolor()
 document.addEventListener("keydown", (event)=>{
     switch(event.key){
         case "ArrowRight":
-        case "ArrowUp":
+        case "ArrowDown":
             if (viewinfo.vistaactual == viewinfo.informacion.length - 1) {
                buttonleft2() 
             }else{
@@ -91,7 +91,7 @@ document.addEventListener("keydown", (event)=>{
             
         break;    
     case "ArrowLeft":
-    case "ArrowDown":
+    case "ArrowUp":
         buttonleftfunction();
 
     default:
@@ -112,13 +112,13 @@ document.body.addEventListener("touchend", (event)=>{
     startx= endx
     starty= endy
          if (walk < -50 && viewinfo.vistaactual < viewinfo.informacion.length - 1) {
-            buttonrightfunction() } else if( walk < 50 && viewinfo.vistaactual == viewinfo.informacion.length - 1){
+            buttonrightfunction() } else if( walk < -50 && viewinfo.vistaactual == viewinfo.informacion.length - 1){
             buttonleft2()
          } else if (walk > 50 && viewinfo.vistaactual > 0){
             buttonleftfunction()
     }
      else if (walky < -50 && viewinfo.vistaactual < viewinfo.informacion.length - 1) {
-            buttonrightfunction() } else if( walky < 50 && viewinfo.vistaactual == viewinfo.informacion.length - 1){
+            buttonrightfunction() } else if( walky < -50 && viewinfo.vistaactual == viewinfo.informacion.length - 1){
             buttonleft2()
          } else if (walky > 50 && viewinfo.vistaactual > 0){
             buttonleftfunction()
